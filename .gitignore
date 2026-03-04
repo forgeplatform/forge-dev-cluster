@@ -1,0 +1,18 @@
+# Vagrant runtime state (per-VM IDs, sshd keys, etc.)
+.vagrant/
+
+# Generated at provisioning time — do NOT commit (contains kubeconfig
+# tokens, master/worker join tokens). Regenerated on every `vagrant up`.
+shared/admin.conf
+shared/master-join.sh
+shared/worker-join.sh
+
+# OS / editor
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+
+# Misc logs
+*.log
