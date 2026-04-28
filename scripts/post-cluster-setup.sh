@@ -8,8 +8,8 @@
 #
 # After this runs, install Forge core + operator separately:
 #
-#   # Forge core (forge-deploy repo)
-#   helm install forge ../forge-deploy/helm -n forge --create-namespace
+#   # Forge core (forge-helm repo)
+#   helm install forge ../forge-helm -n forge
 #
 #   # forge-operator (forge-operator repo). Requires Forge admin OAuth2 PAT:
 #   TOKEN=$(kubectl -n forge exec deploy/forge-web -- forge-manage create_oauth2_token --user admin | tail -1)
@@ -77,7 +77,7 @@ cat <<EOF
  Now deploy Forge:
 
    # In a host shell with KUBECONFIG=$HOME/repos/forge-platform/forge-dev-cluster/shared/admin.conf
-   helm install forge ../forge-deploy/helm -n forge
+   helm install forge ../forge-helm -n forge
 
  And operator:
 

@@ -53,7 +53,7 @@ deploy from their own repos:
 
 ```bash
 # Forge core
-helm install forge ../forge-deploy/helm -n forge
+helm install forge ../forge-helm -n forge
 
 # forge-operator
 TOKEN=$(kubectl -n forge exec deploy/forge-web -- \
