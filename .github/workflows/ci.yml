@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Vagrantfile syntax
+        run: ruby -c Vagrantfile
+      - name: Shellcheck scripts
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: ./scripts
+        continue-on-error: true
