@@ -8,6 +8,39 @@ and the project adheres to CalVer (`YYYY.MM.PATCH`).
 
 ## [Unreleased]
 
+### Changed
+- **Cluster topology expanded to 7 nodes**: 3 control-plane (`k8s-m1`,
+  `k8s-m2`, `k8s-m3`) + 4 worker (`k8s-w1`..`k8s-w4`), all on
+  `192.168.56.30-36`. Per-VM resources bumped to 2 vCPU / 4 GB
+  (was 2 vCPU / 2 GB) → 14 vCPU, 28 GB total. Reasoning: 3-node etcd
+  quorum tolerates a single master failure (was 2-node quorum, which
+  loses the cluster on any master loss), and 4 GB per VM avoids OOM
+  once `forge-helm` + `forge-operator` + the AI assistant are deployed.
+- **Switched distribution from kubeadm to k3s** (v1.30.4+k3s1). k3s
+  bundles Traefik (default ingress), local-path-provisioner (default
+  StorageClass), klipper-lb (servicelb), CoreDNS, and metrics-server,
+  so `post-cluster-setup.sh` collapsed from 4 stages to creating just
+  the `forge` namespace + Harbor pull-secret + self-signed TLS cert.
+  No separate Helm/Traefik install step needed.
+- **HA control plane via embedded etcd**: first server runs
+  `k3s server --cluster-init`, the other two join with `--server`.
+  TLS SANs cover all 3 server IPs and hostnames so `kubectl` works
+  against any master.
+- `--flannel-iface=eth1` passed explicitly on every node (was a
+  post-init patch on the kubeadm setup) — fixes the long-standing
+  cross-node VXLAN problem on VirtualBox without a second pass.
+- Provisioning scripts renamed: `master-init.sh` → `server-init.sh`,
+  `master-join.sh` → `server-join.sh`, `worker-join.sh` →
+  `agent-join.sh`. Old kubeadm-specific code (containerd repo,
+  Kubernetes apt repo, image pre-pull, Flannel manifest patch) removed.
+
+### Removed
+- nginx-ingress was never wired in here, but the `post-cluster-setup.sh`
+  helm-install dance for Traefik is gone — Traefik is now the bundled
+  k3s default ingress. The Traefik `IngressClass` is named `traefik`
+  (was `traefik` before too, but installed by Helm into the `traefik`
+  namespace; it now lives in `kube-system`).
+
 ## [2026.04.0] - 2026-04-28
 
 ### Changed
