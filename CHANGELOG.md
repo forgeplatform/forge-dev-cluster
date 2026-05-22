@@ -8,6 +8,8 @@ and the project adheres to CalVer (`YYYY.MM.PATCH`).
 
 ## [Unreleased]
 
+## [2026.05.0] - 2026-05-22
+
 ### Changed
 - **Cluster topology expanded to 7 nodes**: 3 control-plane (`k8s-m1`,
   `k8s-m2`, `k8s-m3`) + 4 worker (`k8s-w1`..`k8s-w4`), all on
