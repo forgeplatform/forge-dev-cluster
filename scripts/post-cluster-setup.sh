@@ -17,7 +17,7 @@ set -euo pipefail
 
 export KUBECONFIG="${KUBECONFIG:-/etc/rancher/k3s/k3s.yaml}"
 KUBECTL="kubectl"
-HARBOR_REGISTRY="${HARBOR_REGISTRY:-registry.cloudforyour.work}"
+HARBOR_REGISTRY="${HARBOR_REGISTRY:-ghcr.io}"
 HARBOR_USER="${HARBOR_USER:-admin}"
 HARBOR_PASS="${HARBOR_PASS:-CHANGE_ME}"
 
