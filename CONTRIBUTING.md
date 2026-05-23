@@ -1,0 +1,33 @@
+# Contributing to forge-dev-cluster
+
+Thanks for your interest in contributing!
+
+The full contributing guide — git workflow, commit conventions, coding standards, PR process — lives in the [forge-deploy repository](https://github.com/forgeplatform/forge-devops/blob/main/docs/10-contributing-guide.md). Please read it before submitting a pull request.
+
+## What lives here
+
+Vagrant-based local Kubernetes (k3s) cluster used for testing the operator, helm chart, and full deployment end-to-end. Topology: 3 server (`k8s-m1..m3`) + 4 agent (`k8s-w1..w4`) nodes, embedded etcd quorum, Flannel CNI bound to `eth1`.
+
+## Quick start
+
+```bash
+git clone https://github.com/forgeplatform/forge-dev-cluster.git
+cd forge-dev-cluster
+vagrant up
+vagrant ssh k8s-m1 -c "sudo kubectl get nodes"
+```
+
+See [README.md](./README.md) for full details (resource requirements: ~28 GB RAM).
+
+## Guidelines
+
+- **Reproducibility** — provisioning must work from a clean `vagrant destroy -f && vagrant up` on the supported host (Manjaro/Arch + libvirt or VirtualBox).
+- **Idempotency** — provision scripts must be re-runnable without breaking state.
+- **No secrets in repo** — default credentials only; document any required out-of-band secrets in README.
+- **Shellcheck-clean** — bash scripts must pass `shellcheck`.
+
+## Reporting bugs
+
+Open an issue with reproduction steps, your host OS, Vagrant version, and provider (VirtualBox/libvirt).
+
+For security vulnerabilities, see [SECURITY.md](./SECURITY.md) — please do **not** open a public issue.
